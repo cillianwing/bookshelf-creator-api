@@ -2,7 +2,6 @@ class Api::V1::UsersController < ApplicationController
 	skip_before_action :require_login, only: [:create]
 
 	def create
-		binding.pry
 		user = User.new(user_params)
 		if user.valid?
 			user.save
