@@ -10,10 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_14_024408) do
+ActiveRecord::Schema.define(version: 2020_02_14_033034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "books", force: :cascade do |t|
+    t.string "title"
+    t.text "author", default: [], array: true
+    t.string "isbn"
+    t.integer "pages"
+    t.string "api_id"
+    t.bigint "bookshelf_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["bookshelf_id"], name: "index_books_on_bookshelf_id"
+  end
+
+  create_table "bookshelves", force: :cascade do |t|
+    t.string "name"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_bookshelves_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email"
@@ -24,4 +44,6 @@ ActiveRecord::Schema.define(version: 2020_02_14_024408) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "books", "bookshelves"
+  add_foreign_key "bookshelves", "users"
 end
